@@ -1,6 +1,4 @@
 // Snigdha Ghosh Dastidar
-// sdasti2
-// CS 476 PROJECT
 
 open System
 open System.Collections.Generic
