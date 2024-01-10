@@ -1,0 +1,44 @@
+#light
+
+
+
+
+
+namespace graph
+  type GraphL<'T when 'T : comparison> =
+    { Vertices: Set<'T>
+      Edges: Map<('T * 'T),float> }
+  type GraphExp<'T> =
+    | MakeGraph
+    | AddVertex of 'T
+    | AddEdge of 'T * 'T * float
+    | FindShortestPath of 'T * 'T
+  module GraphL = begin
+    val makeGraph : GraphL<'a> when 'a : comparison
+    val addEdge :
+      source:'T -> dest:'T -> weight:float -> graph:GraphL<'T> -> GraphL<'T>
+        when 'T : comparison
+    val addVertex : v:'T -> graph:GraphL<'T> -> GraphL<'T> when 'T : comparison
+    val getNeighbors :
+      vertex:'T -> graph:GraphL<'T> -> Set<'T> when 'T : comparison
+    val getWeight :
+      source:'T -> dest:'T -> graph:GraphL<'T> -> float option
+        when 'T : comparison
+    type PriorityQueue<'T when 'T : comparison> =
+      class
+        new : unit -> PriorityQueue<'T>
+        member Enqueue : item:'T * priority:int -> unit
+        member TryDequeue : unit -> 'T option
+        member isEmpty : bool
+      end
+    val findShortestPath :
+      startV:'T -> endV:'T -> graph:GraphL<'T> -> GraphL<'T>
+        when 'T : comparison
+  end
+
+module Program
+val eval :
+  g:graph.GraphL<'T> -> e:graph.GraphExp<'T> -> graph.GraphL<'T>
+    when 'T : comparison
+val main : argv:string [] -> int
+

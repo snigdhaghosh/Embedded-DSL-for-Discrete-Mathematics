@@ -1,0 +1,48 @@
+namespace graph
+
+type double PositiveInfinity = Infinity;
+
+
+type GraphL<'T when 'T: comparison>  = {
+   Vertices:  Set<'T>
+   Edges: Map<'T * 'T, float> 
+}
+
+type GraphExp<'T> = 
+   | MakeGraph 
+   | AddVertex of 'T 
+   | AddEdge of 'T * 'T * float
+   | FindShortestPath of 'T * 'T
+
+
+module GraphL =
+   let makeGraph = {
+      Vertices = Set.empty;
+      Edges = Map.empty
+   }
+
+   // check if the vertices exists
+   let addEdge (source: 'T) (dest: 'T) (weight: float) (graph: GraphL<'T>) = 
+      if graph.Vertices.Contains(source) && graph.Vertices.Contains(dest) && not (graph.Edges.ContainsKey(source,dest)) then
+         {graph with Edges = Map.add(source, dest) weight graph.Edges;}
+      else
+         printf "Graph does not contain those vertex/ edge already exists ";
+         graph;
+
+
+   // check if the vertex already exists
+   let addVertex (v: 'T) (graph: GraphL<'T>) =
+      if not (graph.Vertices.Contains(v)) then
+         {graph with Vertices = Set.add(v) graph.Vertices;}
+      else
+         printf "Error: Vertex already exists in graph";
+         graph;
+   
+   let findShortestPath (startV:'T) (endV:'T) (graph:GraphL<'T>) =
+      let distances = graph.Edges |> Map.map(fun e w -> 0,Double.PostiveInfinity)
+
+      for kvp in distances do
+        printfn "%A: %A" kvp.Key kvp.Value;
+
+      graph
+
